@@ -332,8 +332,6 @@ namespace WebAPI.Testing.Tests
             var result = browser.Get("/GetData/Get/scheme");
 
             Assert.Equal("http", result.Content.ReadAsStringAsync().Result);
-
-            //result.Body.AsString().ShouldEqual("http");
         }
 
         [Fact]
@@ -342,7 +340,6 @@ namespace WebAPI.Testing.Tests
             var result = browser.Get("/GetData/Get/ajax", with => with.AjaxRequest());
 
             Assert.Equal("ajax", result.Content.ReadAsStringAsync().Result);
-
         }
 
         //    [Fact]
