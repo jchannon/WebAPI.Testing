@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserFixture.cs" />
-    <Compile Include="FakeHandler.cs" />
     <Compile Include="GetDataController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

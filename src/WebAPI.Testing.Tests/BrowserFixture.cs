@@ -54,22 +54,22 @@ namespace WebAPI.Testing.Tests
             Assert.Equal(thisIsMyRequestBody, result.Content.ReadAsStringAsync().Result);
         }
 
-        //    [Fact]
-        //    public void Should_be_able_to_set_user_host_address()
-        //    {
-        //        // Given
-        //        const string userHostAddress = "127.0.0.1";
+        //[Fact]
+        //public void Should_be_able_to_set_user_host_address()
+        //{
+        //    // Given
+        //    const string userHostAddress = "127.0.0.1";
 
-        //        // When
-        //        var result = browser.Get("/userHostAddress", with =>
-        //                                                     {
-        //                                                         with.HttpRequest();
-        //                                                         with.UserHostAddress(userHostAddress);
-        //                                                     });
+        //    // When
+        //    var result = browser.Get("/userHostAddress", with =>
+        //                                                 {
+        //                                                     with.HttpRequest();
+        //                                                     with.UserHostAddress(userHostAddress);
+        //                                                 });
 
-        //        // Then
-        //        result.Body.AsString().ShouldEqual(userHostAddress);
-        //    }
+        //    // Then
+        //    result.Body.AsString().ShouldEqual(userHostAddress);
+        //}
 
         //    [Fact]
         //    public void Should_be_able_to_send_stream_in_body()
