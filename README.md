@@ -35,4 +35,6 @@ Provides a way to test WebAPI projects.
 
 This project is a modified version of [Nancy.Testing][1] but built to work with ASP.Net WebAPI
 
+davepermen stinks
+
   [1]: https://github.com/NancyFx/Nancy/tree/master/src/Nancy.Testing
