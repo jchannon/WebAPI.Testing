@@ -26,7 +26,7 @@ namespace WebAPI.Testing
         public Browser()
         {
             var config = new HttpConfiguration();
-            config.Routes.MapHttpRoute(name: "Default", routeTemplate: "{controller}/{action}/{id}", defaults: new { id = RouteParameter.Optional });
+            config.Routes.MapHttpRoute(name: "Default", routeTemplate: "api/{controller}/{action}/{id}", defaults: new { id = RouteParameter.Optional });
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
             _server = new HttpServer(config);
         }
