@@ -144,44 +144,44 @@ namespace WebAPI.Testing
             context.HttpRequest();
         }
 
-        //private void SetCookies(BrowserContext context)
-        //{
-        //    if (!this.cookies.Any())
-        //    {
-        //        return;
-        //    }
+        private void SetCookies(BrowserContext context)
+        {
+            if (!this.cookies.Any())
+            {
+                return;
+            }
 
-        //    var cookieString = this.cookies.Aggregate(string.Empty, (current, cookie) => current + string.Format("{0}={1};", HttpUtility.UrlEncode(cookie.Key), HttpUtility.UrlEncode(cookie.Value)));
+            var cookieString = this.cookies.Aggregate(string.Empty, (current, cookie) => current + string.Format("{0}={1};", HttpUtility.UrlEncode(cookie.Key), HttpUtility.UrlEncode(cookie.Value)));
 
-        //    context.Header("Set-Cookie", cookieString);
-        //}
+            context.Header("Cookie", cookieString);
+        }
 
-        //private void CaptureCookies(HttpResponseMessage response)
-        //{
-        //    IEnumerable<string> cookies = null;
-        //    if (!response.Headers.TryGetValues("Set-Cookie", out cookies))
-        //    {
-        //        return;
-        //    }
+        private void CaptureCookies(HttpResponseMessage response)
+        {
+            IEnumerable<string> cookies = null;
+            if (!response.Headers.TryGetValues("Set-Cookie", out cookies))
+            {
+                return;
+            }
 
-        //    //if (response.Cookies == null || !response.Cookies.Any())
-        //    //{
-        //    //    return;
-        //    //}
+            //if (response.Cookies == null || !response.Cookies.Any())
+            //{
+            //    return;
+            //}
 
-        //    foreach (var cookie in cookies)
-        //    {
+            //foreach (var cookie in cookies)
+            //{
 
-        //        if (string.IsNullOrEmpty(cookie.Value))
-        //        {
-        //            this.cookies.Remove(cookie.Name);
-        //        }
-        //        else
-        //        {
-        //            this.cookies[cookie.Name] = cookie.Value;
-        //        }
-        //    }
-        //}
+            //    if (string.IsNullOrEmpty(cookie.))
+            //    {
+            //        this.cookies.Remove(cookie.Name);
+            //    }
+            //    else
+            //    {
+            //        this.cookies[cookie.Name] = cookie.Value;
+            //    }
+            //}
+        }
 
         private static void BuildRequestBody(IBrowserContextValues contextValues)
         {
@@ -207,7 +207,7 @@ namespace WebAPI.Testing
             var context =
                 new BrowserContext();
 
-            //this.SetCookies(context);
+            this.SetCookies(context);
 
             browserContext.Invoke(context);
 
@@ -227,11 +227,12 @@ namespace WebAPI.Testing
 
             foreach (var header in contextValues.Headers)
             {
-                if (header.Key.StartsWith("Content"))
+
+                if (!request.Content.Headers.Contains(header.Key) && header.Key.StartsWith("Content"))
                 {
                     request.Content.Headers.Add(header.Key, header.Value);
                 }
-                else
+                else if (!request.Headers.Contains(header.Key))
                 {
                     request.Headers.Add(header.Key, header.Value);
                 }

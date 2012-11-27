@@ -6,6 +6,7 @@ namespace WebAPI.Testing.Tests
 {
     public class GetDataController : ApiController
     {
+        [ActionName("WEE")]
         public HttpResponseMessage Post()
         {
             var body = new StreamReader(Request.Content.ReadAsStreamAsync().Result).ReadToEnd();
@@ -24,8 +25,17 @@ namespace WebAPI.Testing.Tests
                        };
         }
 
+        [ActionName("POO")]
+        public EchoModel PostBinderTHISISSHIT(EchoModel echoModel)
+        {
+
+            return echoModel;
+        }
+
         public HttpResponseMessage Get()
         {
+            //I would return return Request.RequestUri.Host; but by default API wont return text/plain
+
             return new HttpResponseMessage() { Content = new StringContent(Request.RequestUri.Host) };
         }
 
@@ -36,16 +46,24 @@ namespace WebAPI.Testing.Tests
                 case "scheme":
                     return new HttpResponseMessage() { Content = new StringContent(Request.RequestUri.Scheme.ToLower()) };
                     break;
+                case "cookie":
+                    var response = new HttpResponseMessage() { Content = new StringContent("Cookies") };
+
+                    response.Headers.AddCookies(Request.Headers.GetCookies());
+
+                    return response;
+
+                    break;
                 case "ajax":
-                   
-                   return  new HttpResponseMessage()
-                        {
-                            Content =
-                                new StringContent(this.Request.Headers.Contains("X-Requested-With") ? "ajax" : "not-ajax")
-                        };
+
+                    return new HttpResponseMessage()
+                         {
+                             Content =
+                                 new StringContent(this.Request.Headers.Contains("X-Requested-With") ? "ajax" : "not-ajax")
+                         };
                     break;
                 default:
-                    return new HttpResponseMessage() { Content = new StringContent("Stupid WenAPI doesnt allow more than one Get hence this monstrosity") };
+                    return new HttpResponseMessage() { Content = new StringContent("Stupid WebAPI doesnt allow more than one Get hence this monstrosity") };
                     break;
             }
         }

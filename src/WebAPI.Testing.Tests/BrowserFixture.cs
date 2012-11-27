@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Linq;
 
@@ -31,9 +33,10 @@ namespace WebAPI.Testing.Tests
             var config = new HttpConfiguration();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "{controller}/{id}", defaults: new { id = RouteParameter.Optional }
-            );
+              name: "ControllerAndActionfwefew",
+              routeTemplate: "{controller}/{action}/{id}",
+              defaults: new { id = RouteParameter.Optional }
+          );
 
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
@@ -46,10 +49,11 @@ namespace WebAPI.Testing.Tests
             const string thisIsMyRequestBody = "This is my request body";
 
             // When
-            var result = browser.Post("/GetData", with =>
+            var result = browser.Post("/GetData/WEE", with =>
             {
                 with.HttpRequest();
                 with.Body(thisIsMyRequestBody);
+
             });
 
             // Then
@@ -64,7 +68,7 @@ namespace WebAPI.Testing.Tests
             const string userHostAddress = "127.0.0.1";
 
             // When
-            var result = browser.Get("/GetData", with =>
+            var result = browser.Get("/GetData/Get", with =>
                                                          {
                                                              with.HttpRequest();
                                                              with.UserHostAddress(userHostAddress);
@@ -86,7 +90,7 @@ namespace WebAPI.Testing.Tests
             stream.Seek(0, SeekOrigin.Begin);
             // When
 
-            var result = browser.Post("/GetData", with =>
+            var result = browser.Post("/GetData/WEE", with =>
                                            {
                                                with.HttpRequest();
                                                with.Body(stream, "text/plain");
@@ -103,19 +107,38 @@ namespace WebAPI.Testing.Tests
             var model = new EchoModel { SomeString = "Some String", SomeInt = 29, SomeBoolean = true };
 
             // When
-            var result = browser.Post("/GetData", with =>
+            var result = browser.Post("/GetData/WEE", with =>
                                             {
                                                 with.JsonBody(model);
                                             });
 
-            
+
             // Then
             var actualModel = result.Content.DeserializeJson<EchoModel>();
 
             Assert.NotNull(actualModel);
-            Assert.Equal(actualModel.SomeString,model.SomeString);
-            Assert.Equal(actualModel.SomeInt, model.SomeInt);
-            Assert.Equal(actualModel.SomeBoolean,model.SomeBoolean);
+            Assert.Equal(model.SomeString, actualModel.SomeString);
+            Assert.Equal(model.SomeInt, actualModel.SomeInt);
+            Assert.Equal(model.SomeBoolean, actualModel.SomeBoolean);
+        }
+
+        [Fact]
+        public void Should_be_able_to_send_form_values()
+        {
+            var result = browser.Post("/GetData/POO", with =>
+                                                      {
+                                                          with.FormValue("SomeString", "Some String");
+                                                          with.FormValue("SomeInt", "29");
+                                                          with.FormValue("SomeBoolean", "true");
+                                                      });
+
+
+            var actualModel = result.Content.DeserializeJson<EchoModel>();
+
+            Assert.NotNull(actualModel);
+            Assert.Equal("Some String", actualModel.SomeString);
+            Assert.Equal(29, actualModel.SomeInt);
+            Assert.Equal(true, actualModel.SomeBoolean);
         }
 
         [Fact]
@@ -137,80 +160,90 @@ namespace WebAPI.Testing.Tests
             Assert.Equal("Basic " + encodedCredentials, values.Headers["Authorization"].First());
         }
 
-        //    [Fact]
-        //    public void Should_add_cookies_to_the_request()
-        //    {
-        //        // Given
-        //        var context = new BrowserContext();
+        [Fact]
+        public void Should_add_cookies_to_the_request()
+        {
+            // Given
+            var context = new BrowserContext();
 
-        //        var cookies =
-        //            new Dictionary<string, string>
-        //            {
-        //                {"CookieName", "CookieValue"},
-        //                {"SomeCookieName", "SomeCookieValue"}
-        //            };
+            var cookies =
+                new Dictionary<string, string>
+                    {
+                        {"CookieName", "CookieValue"},
+                        {"SomeCookieName", "SomeCookieValue"}
+                    };
 
-        //        // When
-        //        context.Cookie(cookies);
+            // When
+            context.Cookie(cookies);
 
-        //        // Then
-        //        IBrowserContextValues values = context;
+            // Then
+            IBrowserContextValues values = context;
 
-        //        var cookieString = cookies.Aggregate(string.Empty, (current, cookie) => current + string.Format("{0}={1};", HttpUtility.UrlEncode(cookie.Key), HttpUtility.UrlEncode(cookie.Value)));
+            var cookieString = cookies.Aggregate(string.Empty, (current, cookie) => current + string.Format("{0}={1};", HttpUtility.UrlEncode(cookie.Key), HttpUtility.UrlEncode(cookie.Value)));
 
-        //        values.Headers["Cookie"].ShouldHaveCount(1);
-        //        values.Headers["Cookie"].First().ShouldEqual(cookieString);
-        //    }
+            Assert.Equal(1, values.Headers["Cookie"].Count());
+            Assert.Equal(cookieString, values.Headers["Cookie"].First());
 
-        //    [Fact]
-        //    public void Should_add_cookie_to_the_request()
-        //    {
-        //        // Given
-        //        var context = new BrowserContext();
+        }
 
-        //        var cookies =
-        //            new Dictionary<string, string>
-        //            {
-        //                {"CookieName", "CookieValue"},
-        //                {"SomeCookieName", "SomeCookieValue"}
-        //            };
+        [Fact]
+        public void Should_add_cookie_to_the_request()
+        {
+            // Given
+            var context = new BrowserContext();
 
-        //        // When
-        //        foreach (var cookie in cookies)
-        //        {
-        //            context.Cookie(cookie.Key, cookie.Value);
-        //        }
+            var cookies =
+                new Dictionary<string, string>
+                    {
+                        {"CookieName", "CookieValue"},
+                        {"SomeCookieName", "SomeCookieValue"}
+                    };
 
-        //        // Then
-        //        IBrowserContextValues values = context;
+            // When
+            foreach (var cookie in cookies)
+            {
+                context.Cookie(cookie.Key, cookie.Value);
+            }
 
-        //        var cookieString = cookies.Aggregate(string.Empty, (current, cookie) => current + string.Format("{0}={1};", HttpUtility.UrlEncode(cookie.Key), HttpUtility.UrlEncode(cookie.Value)));
+            // Then
+            IBrowserContextValues values = context;
 
-        //        values.Headers["Cookie"].ShouldHaveCount(1);
-        //        values.Headers["Cookie"].First().ShouldEqual(cookieString);
-        //    }
+            var cookieString = cookies.Aggregate(string.Empty, (current, cookie) => current + string.Format("{0}={1};", HttpUtility.UrlEncode(cookie.Key), HttpUtility.UrlEncode(cookie.Value)));
 
-        //    [Fact]
-        //    public void Should_add_cookies_to_the_request_and_get_cookies_in_response()
-        //    {
-        //        // Given
-        //        var cookies =
-        //            new Dictionary<string, string>
-        //            {
-        //                {"CookieName", "CookieValue"},
-        //                {"SomeCookieName", "SomeCookieValue"}
-        //            };
+            Assert.Equal(1, values.Headers["Cookie"].Count());
+            Assert.Equal(cookieString, values.Headers["Cookie"].First());
 
-        //        // When
-        //        var result = browser.Get("/cookie", with =>
-        //        {
-        //            with.Cookie(cookies);
-        //        });
+        }
 
-        //        // Then
-        //        result.Cookies.Single(x => x.Name == "CookieName").Value.ShouldEqual("CookieValue");
-        //        result.Cookies.Single(x => x.Name == "SomeCookieName").Value.ShouldEqual("SomeCookieValue");
-        //    }
+        [Fact]
+        public void Should_add_cookies_to_the_request_and_get_cookies_in_response()
+        {
+            // Given
+            var cookies =
+                new Dictionary<string, string>
+                    {
+                        {"CookieName", "CookieValue"},
+                        {"SomeCookieName", "SomeCookieValue"}
+                    };
+
+            // When
+            var result = browser.Get("/GetData/Get/cookie", with =>
+            {
+                with.Cookie(cookies);
+            });
+
+            // Then
+            var values = result.Headers.Single(x => x.Key == "Set-Cookie").Value.First().Split(';');
+
+            Assert.Equal(2, values.Count());
+            
+            Assert.Equal(cookies.First().Key, values[0].Substring(0, values[0].IndexOf("=")));
+            Assert.Equal(cookies.First().Value, values[0].Substring(values[0].IndexOf("=")+1));
+            
+            Assert.Equal(cookies.Last().Key, values[1].Substring(0, values[1].IndexOf("=")).Trim());  //Have to trim as they are seperated by a whitespace
+            Assert.Equal(cookies.Last().Value, values[1].Substring(values[1].IndexOf("=") + 1).Trim());
+
+        }
 
         //    [Fact]
         //    public void Should_add_a_cookie_to_the_request_and_get_a_cookie_in_response()
@@ -291,9 +324,9 @@ namespace WebAPI.Testing.Tests
         [Fact]
         public void Should_be_able_to_not_specify_delegate_for_basic_http_request()
         {
-            var result = browser.Get("/GetData/scheme");
+            var result = browser.Get("/GetData/Get/scheme");
 
-            Assert.Equal("http",result.Content.ReadAsStringAsync().Result);
+            Assert.Equal("http", result.Content.ReadAsStringAsync().Result);
 
             //result.Body.AsString().ShouldEqual("http");
         }
@@ -301,7 +334,7 @@ namespace WebAPI.Testing.Tests
         [Fact]
         public void Should_add_ajax_header()
         {
-            var result = browser.Get("/GetData/ajax", with => with.AjaxRequest());
+            var result = browser.Get("/GetData/Get/ajax", with => with.AjaxRequest());
 
             Assert.Equal("ajax", result.Content.ReadAsStringAsync().Result);
 
