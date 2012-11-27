@@ -1,6 +1,10 @@
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
+using System.Linq;
 
 namespace WebAPI.Testing.Tests
 {
@@ -28,20 +32,19 @@ namespace WebAPI.Testing.Tests
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "{controller}"
+                routeTemplate: "{controller}/{id}", defaults: new { id = RouteParameter.Optional }
             );
 
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
-             browser = new Browser(config);
-
+            browser = new Browser(config);
         }
 
         [Fact]
         public void Should_be_able_to_send_string_in_body()
         {
             const string thisIsMyRequestBody = "This is my request body";
-            
+
             // When
             var result = browser.Post("/GetData", with =>
             {
@@ -54,82 +57,85 @@ namespace WebAPI.Testing.Tests
             Assert.Equal(thisIsMyRequestBody, result.Content.ReadAsStringAsync().Result);
         }
 
-        //[Fact]
-        //public void Should_be_able_to_set_user_host_address()
-        //{
-        //    // Given
-        //    const string userHostAddress = "127.0.0.1";
+        [Fact]
+        public void Should_be_able_to_set_user_host_address()
+        {
+            // Given
+            const string userHostAddress = "127.0.0.1";
 
-        //    // When
-        //    var result = browser.Get("/userHostAddress", with =>
-        //                                                 {
-        //                                                     with.HttpRequest();
-        //                                                     with.UserHostAddress(userHostAddress);
-        //                                                 });
+            // When
+            var result = browser.Get("/GetData", with =>
+                                                         {
+                                                             with.HttpRequest();
+                                                             with.UserHostAddress(userHostAddress);
+                                                         });
 
-        //    // Then
-        //    result.Body.AsString().ShouldEqual(userHostAddress);
-        //}
+            // Then
+            Assert.Equal(userHostAddress, result.Content.ReadAsStringAsync().Result);
+        }
 
-        //    [Fact]
-        //    public void Should_be_able_to_send_stream_in_body()
-        //    {
-        //        // Given
-        //        const string thisIsMyRequestBody = "This is my request body";
-        //        var stream = new MemoryStream();
-        //        var writer = new StreamWriter(stream);
-        //        writer.Write(thisIsMyRequestBody);
-        //        writer.Flush();
-        //        // When
-        //        var result = browser.Post("/", with =>
-        //                                       {
-        //                                           with.HttpRequest();
-        //                                           with.Body(stream, "text/plain");
-        //                                       });
+        [Fact]
+        public void Should_be_able_to_send_stream_in_body()
+        {
+            // Given
+            const string thisIsMyRequestBody = "This is my request body";
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(thisIsMyRequestBody);
+            writer.Flush();
+            stream.Seek(0, SeekOrigin.Begin);
+            // When
 
-        //        // Then
-        //        result.Body.AsString().ShouldEqual(thisIsMyRequestBody);
-        //    }
+            var result = browser.Post("/GetData", with =>
+                                           {
+                                               with.HttpRequest();
+                                               with.Body(stream, "text/plain");
+                                           });
 
-        //    [Fact]
-        //    public void Should_be_able_to_send_json_in_body()
-        //    {
-        //        // Given
-        //        var model = new EchoModel { SomeString = "Some String", SomeInt = 29, SomeBoolean = true };
+            // Then
+            Assert.Equal(thisIsMyRequestBody, result.Content.ReadAsStringAsync().Result);
+        }
 
-        //        // When
-        //        var result = browser.Post("/", with =>
-        //                                        {
-        //                                            with.JsonBody(model);
-        //                                        });
+        [Fact]
+        public void Should_be_able_to_send_json_in_body()
+        {
+            // Given
+            var model = new EchoModel { SomeString = "Some String", SomeInt = 29, SomeBoolean = true };
 
-        //        // Then
-        //        var actualModel = result.Body.DeserializeJson<EchoModel>();
+            // When
+            var result = browser.Post("/GetData", with =>
+                                            {
+                                                with.JsonBody(model);
+                                            });
 
-        //        actualModel.ShouldNotBeNull();
-        //        actualModel.SomeString.ShouldEqual(model.SomeString);
-        //        actualModel.SomeInt.ShouldEqual(model.SomeInt);
-        //        actualModel.SomeBoolean.ShouldEqual(model.SomeBoolean);
-        //    }
+            
+            // Then
+            var actualModel = result.Content.DeserializeJson<EchoModel>();
 
-        //    [Fact]
-        //    public void Should_add_basic_authentication_credentials_to_the_headers_of_the_request()
-        //    {
-        //        // Given
-        //        var context = new BrowserContext();
+            Assert.NotNull(actualModel);
+            Assert.Equal(actualModel.SomeString,model.SomeString);
+            Assert.Equal(actualModel.SomeInt, model.SomeInt);
+            Assert.Equal(actualModel.SomeBoolean,model.SomeBoolean);
+        }
 
-        //        // When
-        //        context.BasicAuth("username", "password");
+        [Fact]
+        public void Should_add_basic_authentication_credentials_to_the_headers_of_the_request()
+        {
+            // Given
+            var context = new BrowserContext();
 
-        //        // Then
-        //        IBrowserContextValues values = context;
+            // When
+            context.BasicAuth("username", "password");
 
-        //        var credentials = string.Format("{0}:{1}", "username", "password");
-        //        var encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
+            // Then
+            IBrowserContextValues values = context;
 
-        //        values.Headers["Authorization"].ShouldHaveCount(1);
-        //        values.Headers["Authorization"].First().ShouldEqual("Basic " + encodedCredentials);
-        //    }
+            var credentials = string.Format("{0}:{1}", "username", "password");
+            var encodedCredentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
+
+            Assert.Equal(1, values.Headers.Count);
+            Assert.Equal("Basic " + encodedCredentials, values.Headers["Authorization"].First());
+        }
 
         //    [Fact]
         //    public void Should_add_cookies_to_the_request()
@@ -216,35 +222,35 @@ namespace WebAPI.Testing.Tests
         //        result.Cookies.Single(x => x.Name == "CookieName").Value.ShouldEqual("CookieValue");
         //    }
 
-        //    [Fact]
-        //    public void Should_be_able_to_continue_with_another_request()
+        //[Fact]
+        //public void Should_be_able_to_continue_with_another_request()
+        //{
+        //    // Given
+        //    const string FirstRequestBody = "This is my first request body";
+        //    const string SecondRequestBody = "This is my second request body";
+        //    var firstRequestStream = new MemoryStream();
+        //    var firstRequestWriter = new StreamWriter(firstRequestStream);
+        //    firstRequestWriter.Write(FirstRequestBody);
+        //    firstRequestWriter.Flush();
+        //    var secondRequestStream = new MemoryStream();
+        //    var secondRequestWriter = new StreamWriter(secondRequestStream);
+        //    secondRequestWriter.Write(SecondRequestBody);
+        //    secondRequestWriter.Flush();
+
+        //    // When
+        //    var result = browser.Post("/", with =>
         //    {
-        //        // Given
-        //        const string FirstRequestBody = "This is my first request body";
-        //        const string SecondRequestBody = "This is my second request body";
-        //        var firstRequestStream = new MemoryStream();
-        //        var firstRequestWriter = new StreamWriter(firstRequestStream);
-        //        firstRequestWriter.Write(FirstRequestBody);
-        //        firstRequestWriter.Flush();
-        //        var secondRequestStream = new MemoryStream();
-        //        var secondRequestWriter = new StreamWriter(secondRequestStream);
-        //        secondRequestWriter.Write(SecondRequestBody);
-        //        secondRequestWriter.Flush();
+        //        with.HttpRequest();
+        //        with.Body(firstRequestStream, "text/plain");
+        //    }).Then.Post("/", with =>
+        //    {
+        //        with.HttpRequest();
+        //        with.Body(secondRequestStream, "text/plain");
+        //    });
 
-        //        // When
-        //        var result = browser.Post("/", with =>
-        //        {
-        //            with.HttpRequest();
-        //            with.Body(firstRequestStream, "text/plain");
-        //        }).Then.Post("/", with =>
-        //        {
-        //            with.HttpRequest();
-        //            with.Body(secondRequestStream, "text/plain");
-        //        });
-
-        //        // Then
-        //        result.Body.AsString().ShouldEqual(SecondRequestBody);
-        //    }
+        //    // Then
+        //    result.Body.AsString().ShouldEqual(SecondRequestBody);
+        //}
 
         //    [Fact]
         //    public void Should_maintain_cookies_when_chaining_requests()
@@ -282,21 +288,24 @@ namespace WebAPI.Testing.Tests
         //        result.Body.AsString().ShouldEqual("Current session value is: I've created a session!");
         //    }
 
-        //    [Fact]
-        //    public void Should_be_able_to_not_specify_delegate_for_basic_http_request()
-        //    {
-        //        var result = browser.Get("/type");
+        [Fact]
+        public void Should_be_able_to_not_specify_delegate_for_basic_http_request()
+        {
+            var result = browser.Get("/GetData/scheme");
 
-        //        result.Body.AsString().ShouldEqual("http");
-        //    }
+            Assert.Equal("http",result.Content.ReadAsStringAsync().Result);
 
-        //    [Fact]
-        //    public void Should_add_ajax_header()
-        //    {
-        //        var result = browser.Get("/ajax", with => with.AjaxRequest());
+            //result.Body.AsString().ShouldEqual("http");
+        }
 
-        //        result.Body.AsString().ShouldEqual("ajax");
-        //    }
+        [Fact]
+        public void Should_add_ajax_header()
+        {
+            var result = browser.Get("/GetData/ajax", with => with.AjaxRequest());
+
+            Assert.Equal("ajax", result.Content.ReadAsStringAsync().Result);
+
+        }
 
         //    [Fact]
         //    public void Should_add_forms_authentication_cookie_to_the_request()
@@ -324,74 +333,5 @@ namespace WebAPI.Testing.Tests
         //        var cookieValue = HttpUtility.UrlDecode(cookie.Value);
         //        cookieValue.ShouldEqual(cookieContents);
         //    }
-
-        //    public class EchoModel
-        //    {
-        //        public string SomeString { get; set; }
-        //        public int SomeInt { get; set; }
-        //        public bool SomeBoolean { get; set; }
-        //    }
-
-        //    public class EchoModule : NancyModule
-        //    {
-        //        public EchoModule()
-        //        {
-
-        //            Post["/"] = ctx =>
-        //                {
-        //                    var body = new StreamReader(Context.Request.Body).ReadToEnd();
-        //                    return new Response
-        //                            {
-        //                                Contents = stream =>
-        //                                            {
-        //                                                var writer = new StreamWriter(stream);
-        //                                                writer.Write(body);
-        //                                                writer.Flush();
-        //                                            }
-        //                            };
-        //                };
-
-        //            Get["/cookie"] = ctx =>
-        //            {
-        //                var response = (Response)"Cookies";
-
-        //                foreach (var cookie in Request.Cookies)
-        //                {
-        //                    response.AddCookie(cookie.Key, cookie.Value);
-        //                }
-
-        //                return response;
-        //            };
-
-        //            Get["/nothing"] = ctx => string.Empty;
-
-        //            Get["/userHostAddress"] = ctx => Request.UserHostAddress;
-
-        //            Get["/session"] = ctx =>
-        //                {
-        //                    var value = Session["moo"] ?? "";
-
-        //                    var output = "Current session value is: " + value;
-
-        //                    if (string.IsNullOrEmpty(value.ToString()))
-        //                    {
-        //                        Session["moo"] = "I've created a session!";
-        //                    }
-
-        //                    var response = (Response)output;
-
-        //                    return response;
-        //                };
-
-        //            Get["/type"] = _ => Request.Url.Scheme.ToLower();
-
-        //            Get["/ajax"] = _ => this.Request.IsAjaxRequest() ? "ajax" : "not-ajax";
-        //        }
-
-        //    }
-
-
-
-
     }
 }

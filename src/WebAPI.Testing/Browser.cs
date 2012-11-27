@@ -26,7 +26,7 @@ namespace WebAPI.Testing
         public Browser()
         {
             var config = new HttpConfiguration();
-            config.Routes.MapHttpRoute(name: "Default", routeTemplate: "api/{controller}/{action}/{id}", defaults: new { id = RouteParameter.Optional });
+            config.Routes.MapHttpRoute(name: "Default", routeTemplate: "{controller}/{action}/{id}", defaults: new { id = RouteParameter.Optional });
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
             _server = new HttpServer(config);
         }
@@ -223,16 +223,23 @@ namespace WebAPI.Testing
             request.Method = method;
             request.RequestUri = new Uri(contextValues.Protocol + "://" + contextValues.UserHostAddress + path + contextValues.QueryString);
 
+            request.Content = new StreamContent(contextValues.Body);
+
             foreach (var header in contextValues.Headers)
             {
-                request.Headers.Add(header.Key, header.Value);
+                if (header.Key.StartsWith("Content"))
+                {
+                    request.Content.Headers.Add(header.Key, header.Value);
+                }
+                else
+                {
+                    request.Headers.Add(header.Key, header.Value);
+                }
             }
-
-            request.Content = new StreamContent(contextValues.Body);
 
             return request;
         }
 
-       
+
     }
 }

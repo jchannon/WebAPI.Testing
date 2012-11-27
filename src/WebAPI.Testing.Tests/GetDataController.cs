@@ -23,5 +23,31 @@ namespace WebAPI.Testing.Tests
                            Content = new StreamContent(stream)
                        };
         }
+
+        public HttpResponseMessage Get()
+        {
+            return new HttpResponseMessage() { Content = new StringContent(Request.RequestUri.Host) };
+        }
+
+        public HttpResponseMessage Get(string id)
+        {
+            switch (id)
+            {
+                case "scheme":
+                    return new HttpResponseMessage() { Content = new StringContent(Request.RequestUri.Scheme.ToLower()) };
+                    break;
+                case "ajax":
+                   
+                   return  new HttpResponseMessage()
+                        {
+                            Content =
+                                new StringContent(this.Request.Headers.Contains("X-Requested-With") ? "ajax" : "not-ajax")
+                        };
+                    break;
+                default:
+                    return new HttpResponseMessage() { Content = new StringContent("Stupid WenAPI doesnt allow more than one Get hence this monstrosity") };
+                    break;
+            }
+        }
     }
 }
