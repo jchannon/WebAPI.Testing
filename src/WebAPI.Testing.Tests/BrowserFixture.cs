@@ -236,24 +236,29 @@ namespace WebAPI.Testing.Tests
             var values = result.Headers.Single(x => x.Key == "Set-Cookie").Value.First().Split(';');
 
             Assert.Equal(2, values.Count());
-            
+
             Assert.Equal(cookies.First().Key, values[0].Substring(0, values[0].IndexOf("=")));
-            Assert.Equal(cookies.First().Value, values[0].Substring(values[0].IndexOf("=")+1));
-            
+            Assert.Equal(cookies.First().Value, values[0].Substring(values[0].IndexOf("=") + 1));
+
             Assert.Equal(cookies.Last().Key, values[1].Substring(0, values[1].IndexOf("=")).Trim());  //Have to trim as they are seperated by a whitespace
             Assert.Equal(cookies.Last().Value, values[1].Substring(values[1].IndexOf("=") + 1).Trim());
 
         }
 
-        //    [Fact]
-        //    public void Should_add_a_cookie_to_the_request_and_get_a_cookie_in_response()
-        //    {
-        //        // Given, When
-        //        var result = browser.Get("/cookie", with => with.Cookie("CookieName", "CookieValue"));
+        [Fact]
+        public void Should_add_a_cookie_to_the_request_and_get_a_cookie_in_response()
+        {
+            // Given, When
+            var result = browser.Get("/GetData/Get/cookie", with => with.Cookie("CookieName", "CookieValue"));
 
-        //        // Then
-        //        result.Cookies.Single(x => x.Name == "CookieName").Value.ShouldEqual("CookieValue");
-        //    }
+            // Then
+
+            var values = result.Headers.Single(x => x.Key == "Set-Cookie").Value.First().Split(';');
+
+            Assert.Equal(1, values.Count());
+            Assert.Equal("CookieName", values[0].Substring(0,values[0].IndexOf("=")));
+            Assert.Equal("CookieValue", values[0].Substring(values[0].IndexOf("=") + 1));
+        }
 
         //[Fact]
         //public void Should_be_able_to_continue_with_another_request()
