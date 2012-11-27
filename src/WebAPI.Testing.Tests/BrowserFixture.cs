@@ -13,7 +13,7 @@ namespace WebAPI.Testing.Tests
 
     public class BrowserFixture
     {
-        //private readonly Browser browser;
+        private readonly Browser browser;
 
         public BrowserFixture()
         {
@@ -24,32 +24,30 @@ namespace WebAPI.Testing.Tests
 
             //browser = new Browser(bootstrapper);
 
-            //browser = new Browser();
+            var config = new HttpConfiguration();
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "{controller}"
+            );
+
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+
+             browser = new Browser(config);
 
         }
 
         [Fact]
         public void Should_be_able_to_send_string_in_body()
         {
-            // Given
             const string thisIsMyRequestBody = "This is my request body";
-
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(thisIsMyRequestBody) };
-
-            var browser = new Browser
-                              {
-                                  BrowserHttpClient = new HttpClient(new FakeHandler
-                                                                         {
-                                                                             Response = response,
-                                                                             InnerHandler = new HttpClientHandler()
-                                                                         })
-                              };
+            
             // When
-            var result = browser.Post("/", with =>
-                                           {
-                                               with.HttpRequest();
-                                               with.Body(thisIsMyRequestBody);
-                                           });
+            var result = browser.Post("/GetData", with =>
+            {
+                with.HttpRequest();
+                with.Body(thisIsMyRequestBody);
+            });
 
             // Then
 
@@ -391,5 +389,9 @@ namespace WebAPI.Testing.Tests
         //        }
 
         //    }
+
+
+
+
     }
 }
