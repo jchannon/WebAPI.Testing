@@ -21,6 +21,8 @@ namespace WebAPI.Testing
 
         private readonly IDictionary<string, string> cookies = new Dictionary<string, string>();
 
+        public HttpClient BrowserHttpClient { get; set; }
+
         public Browser()
         {
             var config = new HttpConfiguration();
@@ -118,8 +120,12 @@ namespace WebAPI.Testing
                 CreateRequest(method, path, browserContext ?? this.DefaultBrowserContext);
 
             //this.CaptureCookies(response);
-            var client = new HttpClient(_server);
-            HttpResponseMessage response = client.SendAsync(request).Result;
+
+            if (BrowserHttpClient == null)
+                BrowserHttpClient = new HttpClient(_server);
+
+            //var client = new HttpClient(_server);
+            HttpResponseMessage response = BrowserHttpClient.SendAsync(request).Result;
 
             request.Dispose();
 
