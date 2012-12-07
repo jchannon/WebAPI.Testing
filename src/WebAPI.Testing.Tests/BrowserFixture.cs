@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-using System.Linq;
-
 namespace WebAPI.Testing.Tests
 {
     //using Nancy.Extensions;
@@ -16,6 +6,15 @@ namespace WebAPI.Testing.Tests
     //using Nancy.Session;
     //using Nancy.Authentication.Forms;
     using Xunit;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web;
+    using System.Web.Http;
+    using System.Linq;
 
     public class BrowserFixture
     {
@@ -256,7 +255,7 @@ namespace WebAPI.Testing.Tests
             var values = result.Headers.Single(x => x.Key == "Set-Cookie").Value.First().Split(';');
 
             Assert.Equal(1, values.Count());
-            Assert.Equal("CookieName", values[0].Substring(0,values[0].IndexOf("=")));
+            Assert.Equal("CookieName", values[0].Substring(0, values[0].IndexOf("=")));
             Assert.Equal("CookieValue", values[0].Substring(values[0].IndexOf("=") + 1));
         }
 
