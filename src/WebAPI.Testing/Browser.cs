@@ -228,11 +228,11 @@ namespace WebAPI.Testing
             foreach (var header in contextValues.Headers)
             {
 
-                if (!request.Content.Headers.Contains(header.Key) && header.Key.StartsWith("Content"))
+                if (header.Key.StartsWith("Content") && !request.Content.Headers.Contains(header.Key))
                 {
                     request.Content.Headers.Add(header.Key, header.Value);
                 }
-                else if (!request.Headers.Contains(header.Key))
+                else if (!header.Key.StartsWith("Content") && !request.Headers.Contains(header.Key))
                 {
                     request.Headers.Add(header.Key, header.Value);
                 }

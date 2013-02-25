@@ -43,6 +43,19 @@ namespace WebAPI.Testing.Tests
         }
 
         [Fact]
+        public void GetData_WhenRequested_ShouldReturnJSON()
+        {
+            var browser = new Browser();
+            var response = browser.Get("/GetData/Get", (with) =>
+            {
+                with.Header("Accept", "application/json");
+                with.HttpRequest();
+            });
+
+            Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
+        }
+
+        [Fact]
         public void Should_be_able_to_send_string_in_body()
         {
             const string thisIsMyRequestBody = "This is my request body";
