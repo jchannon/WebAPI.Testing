@@ -47,10 +47,10 @@ namespace WebAPI.Testing.Tests
         {
             var browser = new Browser();
             var response = browser.Get("/GetData/Get", (with) =>
-            {
-                with.Header("Accept", "application/json");
-                with.HttpRequest();
-            });
+                                                           {
+                                                               with.Header("Accept", "application/json");
+                                                               with.HttpRequest();
+                                                           });
 
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
         }

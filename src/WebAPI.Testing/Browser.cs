@@ -207,6 +207,8 @@ namespace WebAPI.Testing
             var context =
                 new BrowserContext();
 
+            
+
             this.SetCookies(context);
 
             browserContext.Invoke(context);
