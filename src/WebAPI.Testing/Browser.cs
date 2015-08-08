@@ -114,6 +114,28 @@ namespace WebAPI.Testing
             return this.HandleRequest(HttpMethod.Put, path, browserContext);
         }
 
+		/// <summary>
+		/// Performs a PATCH requests against WebAPI.
+		/// </summary>
+		/// <param name="path">The path that is being requested.</param>
+		/// <param name="browserContext">An closure for providing browser context for the request.</param>
+		/// <returns>An <see cref="HttpResponseMessage"/> instance of the executed request.</returns>
+		public HttpResponseMessage Patch(string path, Action<BrowserContext> browserContext = null)
+		{
+			return this.HandleRequest(new HttpMethod("PATCH"), path, browserContext);
+		}
+
+		/// <summary>
+		/// Performs a TRACE requests against WebAPI.
+		/// </summary>
+		/// <param name="path">The path that is being requested.</param>
+		/// <param name="browserContext">An closure for providing browser context for the request.</param>
+		/// <returns>An <see cref="HttpResponseMessage"/> instance of the executed request.</returns>
+		public HttpResponseMessage Trace(string path, Action<BrowserContext> browserContext = null)
+		{
+			return this.HandleRequest(HttpMethod.Trace, path, browserContext);
+		}
+
         private HttpResponseMessage HandleRequest(HttpMethod method, string path, Action<BrowserContext> browserContext)
         {
             var request =
