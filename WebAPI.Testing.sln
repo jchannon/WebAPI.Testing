@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI.Testing", "src\WebAPI.Testing\WebAPI.Testing.csproj", "{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI.Testing.Tests", "src\WebAPI.Testing.Tests\WebAPI.Testing.Tests.csproj", "{D32E2000-3FDF-4D3E-A29A-03CB78D65944}"
@@ -10,25 +12,35 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		MonoDebug|Any CPU = MonoDebug|Any CPU
 		MonoRelease|Any CPU = MonoRelease|Any CPU
+		Release 4.0|Any CPU = Release 4.0|Any CPU
+		Release 4.5|Any CPU = Release 4.5|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoDebug|Any CPU.Build.0 = Debug|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoRelease|Any CPU.Build.0 = Release|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.MonoDebug|Any CPU.ActiveCfg = MonoDebug|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.MonoDebug|Any CPU.Build.0 = MonoDebug|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.MonoRelease|Any CPU.ActiveCfg = MonoRelease|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.MonoRelease|Any CPU.Build.0 = MonoRelease|Any CPU
+		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
+		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Release 4.5|Any CPU.ActiveCfg = Release 4.5|Any CPU
+		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Release 4.5|Any CPU.Build.0 = Release 4.5|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoDebug|Any CPU.Build.0 = Debug|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.MonoRelease|Any CPU.Build.0 = Release|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release 4.5|Any CPU.ActiveCfg = Release 4.5|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release 4.5|Any CPU.Build.0 = Release 4.5|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32E2000-3FDF-4D3E-A29A-03CB78D65944}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
