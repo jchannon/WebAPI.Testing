@@ -39,8 +39,4 @@ This project is a modified version of [Nancy.Testing][1] but built to work with 
 
 ---
 
-To build nuget packages open a Developer Command Prompt and run the 
-
->buildandpack.cmd
-
-command.
+To build nuget packages open a Developer Command Prompt and run: `buildandpack.cmd`
