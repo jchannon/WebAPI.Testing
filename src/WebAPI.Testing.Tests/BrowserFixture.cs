@@ -1,20 +1,13 @@
 namespace WebAPI.Testing.Tests
 {
-    //using Nancy.Extensions;
-    //using Nancy.Tests;
-    //using Nancy.Helpers;
-    //using Nancy.Session;
-    //using Nancy.Authentication.Forms;
-    using Xunit;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Net;
-    using System.Net.Http;
+    using System.Linq;
     using System.Text;
     using System.Web;
     using System.Web.Http;
-    using System.Linq;
+    using Xunit;
 
     public class BrowserFixture
     {
@@ -22,13 +15,6 @@ namespace WebAPI.Testing.Tests
 
         public BrowserFixture()
         {
-            //var bootstrapper =
-            //    new ConfigurableBootstrapper(config => config.Modules(typeof(EchoModule)));
-
-            //CookieBasedSessions.Enable(bootstrapper);
-
-            //browser = new Browser(bootstrapper);
-
             var config = new HttpConfiguration();
 
             config.Routes.MapHttpRoute(
