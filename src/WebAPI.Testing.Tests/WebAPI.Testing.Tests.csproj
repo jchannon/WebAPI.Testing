@@ -87,9 +87,11 @@
     <Reference Include="System.Web.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrowserExtensionsFixture.cs" />
     <Compile Include="BrowserFixture.cs" />
     <Compile Include="EchoModel.cs" />
     <Compile Include="GetDataController.cs" />
+    <Compile Include="JsonController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

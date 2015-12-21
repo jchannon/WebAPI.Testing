@@ -1,9 +1,9 @@
-using System.IO;
-using System.Net.Http;
-using System.Web.Http;
-
 namespace WebAPI.Testing.Tests
 {
+    using System.IO;
+    using System.Net.Http;
+    using System.Web.Http;
+
     public class GetDataController : ApiController
     {
         [ActionName("WEE")]
