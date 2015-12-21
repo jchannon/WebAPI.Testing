@@ -136,6 +136,7 @@
     <Reference Include="System.Web.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrowserExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="BrowserContext.cs" />
