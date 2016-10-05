@@ -11,7 +11,7 @@ namespace WebAPI.Testing.Tests
 
     public class BrowserFixture
     {
-        private readonly Browser browser;
+        private readonly Browser _browser;
 
         public BrowserFixture()
         {
@@ -25,7 +25,7 @@ namespace WebAPI.Testing.Tests
 
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
-            browser = new Browser(config);
+            _browser = new Browser(config);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace WebAPI.Testing.Tests
             const string thisIsMyRequestBody = "This is my request body";
 
             // When
-            var result = browser.Post("/GetData/WEE", with =>
+            var result = _browser.Post("/GetData/WEE", with =>
             {
                 with.HttpRequest();
                 with.Body(thisIsMyRequestBody);
@@ -66,7 +66,7 @@ namespace WebAPI.Testing.Tests
             const string userHostAddress = "127.0.0.1";
 
             // When
-            var result = browser.Get("/GetData/Get", with =>
+            var result = _browser.Get("/GetData/Get", with =>
                                                          {
                                                              with.HttpRequest();
                                                              with.UserHostAddress(userHostAddress);
@@ -88,7 +88,7 @@ namespace WebAPI.Testing.Tests
             stream.Seek(0, SeekOrigin.Begin);
             // When
 
-            var result = browser.Post("/GetData/WEE", with =>
+            var result = _browser.Post("/GetData/WEE", with =>
                                            {
                                                with.HttpRequest();
                                                with.Body(stream, "text/plain");
@@ -105,7 +105,7 @@ namespace WebAPI.Testing.Tests
             var model = new EchoModel { SomeString = "Some String", SomeInt = 29, SomeBoolean = true };
 
             // When
-            var result = browser.Post("/GetData/WEE", with =>
+            var result = _browser.Post("/GetData/WEE", with =>
                                             {
                                                 with.JsonBody(model);
                                             });
@@ -123,7 +123,7 @@ namespace WebAPI.Testing.Tests
         [Fact]
         public void Should_be_able_to_send_form_values()
         {
-            var result = browser.Post("/GetData/POO", with =>
+            var result = _browser.Post("/GetData/POO", with =>
                                                       {
                                                           with.FormValue("SomeString", "Some String");
                                                           with.FormValue("SomeInt", "29");
@@ -225,7 +225,7 @@ namespace WebAPI.Testing.Tests
                     };
 
             // When
-            var result = browser.Get("/GetData/Get/cookie", with =>
+            var result = _browser.Get("/GetData/Get/cookie", with =>
             {
                 with.Cookie(cookies);
             });
@@ -247,7 +247,7 @@ namespace WebAPI.Testing.Tests
         public void Should_add_a_cookie_to_the_request_and_get_a_cookie_in_response()
         {
             // Given, When
-            var result = browser.Get("/GetData/Get/cookie", with => with.Cookie("CookieName", "CookieValue"));
+            var result = _browser.Get("/GetData/Get/cookie", with => with.Cookie("CookieName", "CookieValue"));
 
             // Then
 
@@ -327,7 +327,7 @@ namespace WebAPI.Testing.Tests
         [Fact]
         public void Should_be_able_to_not_specify_delegate_for_basic_http_request()
         {
-            var result = browser.Get("/GetData/Get/scheme");
+            var result = _browser.Get("/GetData/Get/scheme");
 
             Assert.Equal("http", result.Content.ReadAsStringAsync().Result);
         }
@@ -335,7 +335,7 @@ namespace WebAPI.Testing.Tests
         [Fact]
         public void Should_add_ajax_header()
         {
-            var result = browser.Get("/GetData/Get/ajax", with => with.AjaxRequest());
+            var result = _browser.Get("/GetData/Get/ajax", with => with.AjaxRequest());
 
             Assert.Equal("ajax", result.Content.ReadAsStringAsync().Result);
         }

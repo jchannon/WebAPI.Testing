@@ -4,6 +4,7 @@ namespace WebAPI.Testing.Tests
     using System.Net;
     using System.Web.Http;
     using Xunit;
+    using RouteParameter = System.Web.Http.RouteParameter;
 
     public class BrowserExtensionsFixture
     {
