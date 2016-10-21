@@ -2,10 +2,10 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>WebAPI.Testing</id>
-        <version>1.2.0</version>
+        <version>2.0.0</version>
         <title>WebAPI.Testing</title>
-        <authors>Jonathan Channon</authors>
-        <owners>Jonathan Channon</owners>
+        <authors>Jonathan Channon, Dafydd Giddins</authors>
+        <owners>Jonathan Channon, Dafydd Giddins</owners>
         <licenseUrl>https://github.com/jchannon/WebAPI.Testing/blob/master/licence.txt</licenseUrl>
         <projectUrl>https://github.com/jchannon/WebAPI.Testing</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -17,9 +17,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="src\WebAPI.Testing\bin\Release\net40\WebAPI.Testing.dll" target="lib\net40\WebAPI.Testing.dll" />
-        <file src="src\WebAPI.Testing\bin\Release\net40\WebAPI.Testing.pdb" target="lib\net40\WebAPI.Testing.pdb" />
-        <file src="src\WebAPI.Testing\bin\Release\net45\WebAPI.Testing.dll" target="lib\net45\WebAPI.Testing.dll" />
-        <file src="src\WebAPI.Testing\bin\Release\net45\WebAPI.Testing.pdb" target="lib\net45\WebAPI.Testing.pdb" />
+        <file src="src\WebAPI.Testing\bin\Release\WebAPI.Testing.dll" target="lib\net45\WebAPI.Testing.dll" />
+        <file src="src\WebAPI.Testing\bin\Release\WebAPI.Testing.pdb" target="lib\net45\WebAPI.Testing.pdb" />
     </files>
 </package>
